@@ -1,0 +1,267 @@
+<title>AHP Responses ME6097</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap">
+<style>
+/* Researcher's private page: paste the officers' WhatsApp messages, every answer code is decoded and stored; one row per officer, group weights, CSV export. */
+:root{
+  --bg:#EEF2F3; --bg2:#E3E9EC; --card:#FFFFFF; --card-2:rgba(14,34,48,.035); --line:rgba(14,34,48,.12); --line-2:rgba(14,34,48,.22);
+  --ink:#0E2230; --muted:#4A606C; --accent:#9C5F0A; --accent-ink:#FFFFFF; --ok:#1F7A4A; --warn:#9A5F00; --bad:#B3261E;
+  --c1:#13747B; --c2:#A3640B; --c3:#BC4A31; --c4:#2A66A8; --c5:#457F25; --c6:#6E4DB0;
+  --shadow:0 24px 60px -40px rgba(14,34,48,.45); --font:"Cairo",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#08101B; --bg2:#0D1726; --card:#101A28; --card-2:rgba(255,255,255,.04); --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.2);
+  --ink:#EEF3F5; --muted:#A2B3BD; --accent:#F2B66C; --accent-ink:#1B1205; --ok:#5FC891; --warn:#F2B04E; --bad:#F2867D;
+  --c1:#4CC2BA; --c2:#F0C47A; --c3:#F08A6C; --c4:#78B0EE; --c5:#A8D576; --c6:#BBA0F0;
+  --shadow:0 24px 60px -36px rgba(0,0,0,.8); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08101B; --bg2:#0D1726; --card:#101A28; --card-2:rgba(255,255,255,.04); --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.2);
+  --ink:#EEF3F5; --muted:#A2B3BD; --accent:#F2B66C; --accent-ink:#1B1205; --ok:#5FC891; --warn:#F2B04E; --bad:#F2867D;
+  --c1:#4CC2BA; --c2:#F0C47A; --c3:#F08A6C; --c4:#78B0EE; --c5:#A8D576; --c6:#BBA0F0;
+  --shadow:0 24px 60px -36px rgba(0,0,0,.8); color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 85% -10%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1180px;margin:0 auto;padding:18px clamp(16px,3vw,36px) 48px;display:grid;gap:18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;line-height:1.25;min-width:0}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{display:block;font-weight:800;font-size:17px}
+.brand small{display:block;font-size:12.5px;color:var(--muted);font-weight:600}
+.tools{display:flex;gap:8px;align-items:center}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:transparent;padding:4px 13px;border-radius:9px;cursor:pointer;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.icon{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);cursor:pointer}
+.icon svg{width:18px;height:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(16px,2.2vw,24px);box-shadow:var(--shadow);display:grid;gap:14px;min-width:0}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-size:clamp(24px,2.6vw,32px);font-weight:800;line-height:1.3}
+h2{font-size:18px;font-weight:800}
+p{margin:0}
+.muted{color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 16px;box-shadow:var(--shadow)}
+.kpi .l{font-size:13px;font-weight:700;color:var(--muted)}
+.kpi .v{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.3}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+textarea{width:100%;min-height:150px;border:1px solid var(--line-2);background:var(--card-2);border-radius:14px;padding:12px 14px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row.end{justify-content:space-between}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;min-height:42px;padding:6px 18px;font-weight:800;font-size:15px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.cta[disabled]{opacity:.4;cursor:not-allowed}
+.cta.alt{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.cta svg{width:17px;height:17px}
+.msg{font-size:14px;font-weight:700}
+.msg.ok{color:var(--ok)}.msg.warn{color:var(--warn)}
+.pill{display:inline-flex;align-items:center;border-radius:999px;padding:1px 10px;font-size:12.5px;font-weight:800;border:1px solid currentColor;white-space:nowrap}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.mute{color:var(--muted)}
+.bars{display:grid;gap:9px}
+.bar{display:grid;grid-template-columns:1.6em minmax(0,13em) minmax(0,1fr) 3.6em;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.bar .r{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .t i{font-style:normal;font-weight:800;color:var(--cc)}
+.bar .tr{height:10px;border-radius:9px;background:var(--card-2);border:1px solid var(--line);overflow:hidden}
+.bar .tr span{display:block;height:100%;border-radius:9px;background:var(--cc)}
+.bar .v{text-align:end;font-weight:800;font-variant-numeric:tabular-nums}
+@media (max-width:520px){.bar{grid-template-columns:1.4em minmax(0,8em) minmax(0,1fr) 3.4em;font-size:13px}}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:860px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:start;vertical-align:middle;white-space:nowrap}
+th{font-size:12.5px;font-weight:800;color:var(--muted);background:var(--card-2);position:sticky;top:0}
+th.c{color:var(--cc)}
+td.n,th.n{text-align:center;font-variant-numeric:tabular-nums}
+td.w{text-align:center;font-variant-numeric:tabular-nums;font-weight:700}
+td.w span{display:inline-block;min-width:3.4em;padding:1px 6px;border-radius:8px;background:color-mix(in srgb,var(--cc) calc(var(--a)*100%),transparent)}
+tr.main{cursor:pointer}
+tr.main:hover td{background:var(--card-2)}
+tr.det td{background:var(--card-2);white-space:normal;padding:12px 14px}
+.ans{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:6px 18px}
+.ans div{display:grid;grid-template-columns:2em minmax(0,1fr);gap:8px;font-size:13.5px;line-height:1.45}
+.ans b{color:var(--muted);font-variant-numeric:tabular-nums}
+.ans i{font-style:normal;font-weight:800;color:var(--cc)}
+.ans .s{display:block;font-weight:700}
+.mini{border:1px solid var(--line-2);background:transparent;border-radius:9px;padding:2px 10px;font-size:12.5px;font-weight:700;cursor:pointer}
+.mini.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 60%,transparent)}
+.mini.armed{background:var(--bad);color:#fff}
+.empty{border:1px dashed var(--line-2);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
+.code{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--muted);word-break:break-all;direction:ltr;text-align:left}
+.toast{position:fixed;inset-inline:16px;bottom:18px;margin-inline:auto;max-width:440px;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;text-align:center;font-weight:700;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;z-index:9}
+.toast.on{opacity:1;transform:none}
+</style>
+
+<div class="wrap" id="app" dir="rtl" lang="ar">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2"><path d="M20 4 33.9 12v16L20 36 6.1 28V12z"/><path d="M20 4 20 36M6.1 12 33.9 28M33.9 12 6.1 28"/></g><circle cx="20" cy="4" r="3.2" fill="var(--c1)"/><circle cx="33.9" cy="12" r="3.2" fill="var(--c2)"/><circle cx="33.9" cy="28" r="3.2" fill="var(--c3)"/><circle cx="20" cy="36" r="3.2" fill="var(--c4)"/><circle cx="6.1" cy="28" r="3.2" fill="var(--c5)"/><circle cx="6.1" cy="12" r="3.2" fill="var(--c6)"/></svg>
+      <div><b id="t-brand"></b><small id="t-sub"></small></div>
+    </div>
+    <div class="tools">
+      <button class="icon" id="themeBtn" aria-label="Theme"></button>
+      <div class="seg" role="group" aria-label="Language"><button id="lang-en" aria-pressed="false">EN</button><button id="lang-ar" aria-pressed="true">عربي</button></div>
+    </div>
+  </header>
+  <main id="main" style="display:grid;gap:18px"></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+"use strict";
+const T={
+ ar:{dir:"rtl",brand:"لوحة إجابات الضباط",sub:"استبيان AHP · مشروع ME6097 · خاصة بالباحث",
+  h1:"إجابات ضباط الصيانة",lead:"الصق هنا رسائل الواتساب التي تصلك من الضباط، ويُستخرج رمز كل إجابة تلقائياً ويُحفظ. كل ضابط يظهر في صف مستقل.",
+  k:["عدد الإجابات","متسقة (CR < 0.10)","تحتاج مراجعة","آخر إجابة"],
+  addH:"إضافة إجابات",paste:"الصق رسالة أو أكثر هنا",add:"أضف الإجابات",
+  added:(a,d,b)=>[a?`إجابات جديدة: ${a}`:"",d?`مكررة سبق حفظها: ${d}`:"",b?`رموز غير صالحة: ${b}`:""].filter(Boolean).join(" · ")||"لم يُعثر على أي رمز في النص.",
+  groupH:"أوزان المجموعة",groupNote:n=>`المتوسط الهندسي لمصفوفات الإجابات المتسقة (n = ${n})، بنفس طريقة ورقة Calc في الإكسل.`,groupNone:"تظهر الأوزان بعد إضافة إجابة متسقة واحدة على الأقل.",
+  tableH:"إجابة كل ضابط",tableNote:"اضغط على الصف لعرض الإجابات الخمس عشرة بصيغة قائمة الإكسل.",
+  cols:["#","تاريخ الإرسال","الخبرة","اللغة","CR"],del:"حذف",sure:"تأكيد الحذف",show:"عرض",hide:"إخفاء",
+  none:"لا توجد إجابات بعد.",csv:"تنزيل CSV",copyCsv:"نسخ CSV",copied:"تم النسخ",saved:"تم حفظ الملف",
+  local:"قاعدة البيانات غير متاحة في هذا العرض، فالإجابات محفوظة في هذا المتصفح فقط.",denied:"هذه الصفحة خاصة بمالكها.",
+  exps:["أقل من 5","5 إلى 10","11 إلى 15","16 إلى 20","أكثر من 20"],
+  opts:["أ أهم بشكل مطلق (9)","أ أهم بقوة كبيرة (7)","أ أهم بوضوح (5)","أ أهم قليلاً (3)","متساويان في الأهمية (1)","ب أهم قليلاً (3)","ب أهم بوضوح (5)","ب أهم بقوة كبيرة (7)","ب أهم بشكل مطلق (9)"],
+  crit:["التكلفة الإجمالية على عمر المشروع","التكلفة الرأسمالية الأولية","الاعتماد على الديزل","استمرارية الخدمات غير الحرجة","عبء صيانة المولدات","مخاطر تقلب سعر الوقود"],theme:"تبديل الوضع"},
+ en:{dir:"ltr",brand:"Officer Responses",sub:"AHP survey · ME6097 · researcher only",
+  h1:"Maintenance officer responses",lead:"Paste the WhatsApp messages the officers send you. Every answer code in the text is decoded and stored, one row per officer.",
+  k:["Responses","Consistent (CR < 0.10)","Need review","Latest"],
+  addH:"Add responses",paste:"Paste one or more messages here",add:"Add responses",
+  added:(a,d,b)=>[a?`New responses: ${a}`:"",d?`Already saved: ${d}`:"",b?`Invalid codes: ${b}`:""].filter(Boolean).join(" · ")||"No answer code found in the text.",
+  groupH:"Group weights",groupNote:n=>`Geometric mean of the consistent response matrices (n = ${n}), as in the Excel Calc sheet.`,groupNone:"Weights appear once at least one consistent response is added.",
+  tableH:"Each officer's response",tableNote:"Click a row to see the fifteen answers in the Excel list wording.",
+  cols:["#","Submitted","Experience","Lang","CR"],del:"Delete",sure:"Confirm delete",show:"Show",hide:"Hide",
+  none:"No responses yet.",csv:"Download CSV",copyCsv:"Copy CSV",copied:"Copied",saved:"File saved",
+  local:"The database is not available in this view, so responses are kept in this browser only.",denied:"This page is private to its owner.",
+  exps:["Less than 5","5 to 10","11 to 15","16 to 20","More than 20"],
+  opts:["A is extremely more important (9)","A is very strongly more important (7)","A is strongly more important (5)","A is moderately more important (3)","A and B are equally important (1)","B is moderately more important (3)","B is strongly more important (5)","B is very strongly more important (7)","B is extremely more important (9)"],
+  crit:["Lifetime cost (NPC)","Initial capital cost","Diesel dependence","Continuity of non-critical services","Generator maintenance burden","Fuel price risk"],theme:"Switch theme"}
+};
+const PAIRS=[[0,1],[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,3],[2,4],[2,5],[3,4],[3,5],[4,5]];
+const STEPS=[-4,-3,-2,-1,0,1,2,3,4];
+const intensity=k=>2*Math.abs(k)+1, valueOf=k=>k<0?intensity(k):k>0?1/intensity(k):1;
+function eig(A){const n=6,cs=[...Array(n)].map((_,j)=>A.reduce((s,r)=>s+r[j],0));let w=Array(n).fill(1/n);
+  for(let it=0;it<40;it++){const den=cs.reduce((s,c,j)=>s+c*w[j],0);w=A.map(r=>r.reduce((s,a,j)=>s+a*w[j],0)/den);}
+  const lam=cs.reduce((s,c,j)=>s+c*w[j],0);return {w,lam,CR:((lam-n)/(n-1))/1.24};}
+function ahp(a){const A=[...Array(6)].map(()=>Array(6).fill(1));PAIRS.forEach(([i,j],q)=>{const v=valueOf(a[q]);A[i][j]=v;A[j][i]=1/v;});return eig(A);}
+function geoGroup(list){if(!list.length)return null;const A=[...Array(6)].map(()=>Array(6).fill(1));
+  PAIRS.forEach(([i,j],q)=>{const g=Math.exp(list.reduce((s,r)=>s+Math.log(valueOf(r.a[q])),0)/list.length);A[i][j]=g;A[j][i]=1/g;});return {...eig(A),n:list.length};}
+const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")),c=>c.charCodeAt(0)));
+const sum4=s=>{let h=2166136261;for(const c of s){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0;}return (h>>>0).toString(16).slice(-4).padStart(4,"0");};
+function decode(code){const m=code.match(/^AHP6-([A-Za-z0-9_-]+)-([0-9a-f]{4})$/);if(!m||sum4(m[1])!==m[2])return null;
+  try{const o=JSON.parse(b64d(m[1]));if(!Array.isArray(o.a)||o.a.length!==15||o.a.some(k=>!STEPS.includes(k))||!(o.e>=0&&o.e<=4))return null;return o;}catch{return null;}}
+const idOf=code=>`r-${sum4(code)}${code.slice(-4)}`;
+
+const $=s=>document.querySelector(s);
+const el=(tag,attrs={},...kids)=>{const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==="class")e.className=v;else if(k==="text")e.textContent=v;else if(k==="html")e.innerHTML=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else if(v===true)e.setAttribute(k,"");else if(v!==false&&v!=null)e.setAttribute(k,v);}for(const c of kids.flat())if(c!=null)e.append(c.nodeType?c:document.createTextNode(c));return e;};
+const ccol=i=>`var(--c${i+1})`;
+const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),2400);};
+const store={get(k){try{return JSON.parse(localStorage.getItem(k)||"null");}catch{return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
+const ICON={sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>',
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>'};
+
+const S={lang:store.get("ahp6-owner-lang")||"ar",open:new Set(),armed:null,msg:"",msgCls:"ok",mode:"init"};
+let DB=null, DL=null, rows=[];
+const L=()=>T[S.lang];
+function isDark(){const a=document.documentElement.getAttribute("data-theme");return a?a==="dark":matchMedia("(prefers-color-scheme: dark)").matches;}
+{const th=store.get("ahp6-theme");if(th==="dark"||th==="light")document.documentElement.setAttribute("data-theme",th);}
+const fmtDate=t=>{try{return new Date(t).toLocaleString(S.lang==="ar"?"ar-SA-u-ca-gregory-nu-latn":"en-GB",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});}catch{return String(t||"").slice(0,16);}};
+
+function render(){
+  const t=L(), app=$("#app"); app.dir=t.dir; app.lang=S.lang; document.documentElement.lang=S.lang; document.documentElement.dir=t.dir;
+  $("#t-brand").textContent=t.brand; $("#t-sub").textContent=t.sub;
+  $("#lang-en").setAttribute("aria-pressed",S.lang==="en"); $("#lang-ar").setAttribute("aria-pressed",S.lang==="ar");
+  const tb=$("#themeBtn"); tb.innerHTML=isDark()?ICON.sun:ICON.moon; tb.title=t.theme; tb.setAttribute("aria-label",t.theme);
+  const ok=rows.filter(r=>r.cr<0.1), g=geoGroup(ok), last=rows.length?rows[rows.length-1]:null;
+  const kpis=el("div",{class:"kpis"},[rows.length,ok.length,rows.length-ok.length,last?fmtDate(last.t):"–"].map((v,n)=>el("div",{class:"kpi"},el("div",{class:"l",text:t.k[n]}),el("div",{class:"v",style:n===3?"font-size:17px;padding-top:8px":n===1?"color:var(--ok)":n===2&&v?"color:var(--warn)":"",text:String(v)}))));
+  const ta=el("textarea",{id:"paste",placeholder:t.paste,"aria-label":t.paste});
+  const add=el("div",{class:"card"},el("h2",{text:t.addH}),el("p",{class:"muted",text:t.lead}),ta,
+    el("div",{class:"row end"},el("button",{class:"cta",id:"addBtn",onclick:()=>importText(ta.value).then(()=>{ta.value="";})},t.add),S.msg?el("span",{class:"msg "+S.msgCls,text:S.msg}):null),
+    S.mode==="local"?el("p",{class:"msg warn",text:t.local}):S.mode==="denied"?el("p",{class:"msg warn",text:t.denied}):null);
+  const grp=el("div",{class:"card"},el("h2",{text:t.groupH}),
+    g?[el("p",{class:"muted",text:t.groupNote(g.n)}),bars(g.w),el("div",{class:"row"},el("span",{class:"pill "+(g.CR<0.1?"ok":"warn"),text:`CR ${g.CR.toFixed(3)}`}))]:el("p",{class:"empty",text:t.groupNone}));
+  const head=el("tr",{},t.cols.map((c,n)=>el("th",{class:n===2||n===3?"":"n",text:c})),[0,1,2,3,4,5].map(c=>el("th",{class:"n c",style:`--cc:${ccol(c)}`,text:`C${c+1}`,title:t.crit[c]})),el("th",{text:""}));
+  const body=[];
+  rows.forEach((r,n)=>{
+    const mx=Math.max(...r.w), isOpen=S.open.has(r.id);
+    body.push(el("tr",{class:"main",onclick:e=>{if(e.target.closest("button"))return;isOpen?S.open.delete(r.id):S.open.add(r.id);render();}},
+      el("td",{class:"n",text:String(n+1)}),el("td",{class:"n",text:fmtDate(r.t)}),el("td",{text:t.exps[r.e]??""}),el("td",{text:(r.l||"").toUpperCase()}),
+      el("td",{class:"n"},el("span",{class:"pill "+(r.cr<0.1?"ok":"warn"),text:r.cr.toFixed(3)})),
+      r.w.map((x,c)=>el("td",{class:"w",style:`--cc:${ccol(c)};--a:${(.08+.42*x/mx).toFixed(2)}`},el("span",{text:(x*100).toFixed(1)}))),
+      el("td",{},el("div",{class:"row",style:"flex-wrap:nowrap;gap:6px"},
+        el("button",{class:"mini",onclick:()=>{isOpen?S.open.delete(r.id):S.open.add(r.id);render();}},isOpen?t.hide:t.show),
+        el("button",{class:"mini danger"+(S.armed===r.id?" armed":""),onclick:()=>{if(S.armed===r.id){S.armed=null;remove(r.id);}else{S.armed=r.id;render();setTimeout(()=>{if(S.armed===r.id){S.armed=null;render();}},4000);}}},S.armed===r.id?t.sure:t.del)))));
+    if(isOpen) body.push(el("tr",{class:"det"},el("td",{colspan:"12"},
+      el("div",{class:"ans"},PAIRS.map(([i,j],q)=>el("div",{},el("b",{text:String(q+1)}),el("span",{},
+        el("i",{style:`--cc:${ccol(i)}`,text:`C${i+1}`})," ",t.crit[i]," ⟷ ",el("i",{style:`--cc:${ccol(j)}`,text:`C${j+1}`})," ",t.crit[j],
+        el("span",{class:"s",text:t.opts[STEPS.indexOf(r.a[q])]}))))),
+      el("p",{class:"code",style:"margin-top:10px",text:r.code}))));
+  });
+  const tbl=el("div",{class:"card"},el("div",{class:"row end"},el("div",{},el("h2",{text:t.tableH}),el("p",{class:"muted",text:t.tableNote})),
+      el("div",{class:"row"},el("button",{class:"cta alt",disabled:!rows.length,onclick:copyCsv},t.copyCsv),el("button",{class:"cta",id:"csvBtn",disabled:!rows.length,onclick:saveCsv},el("span",{html:ICON.dl,style:"display:contents"}),t.csv))),
+    rows.length?el("div",{class:"tbl"},el("table",{},el("thead",{},head),el("tbody",{},body))):el("p",{class:"empty",text:t.none}));
+  $("#main").replaceChildren(el("h1",{text:t.h1}),kpis,el("div",{class:"grid2"},add,grp),tbl);
+}
+function bars(w){
+  const t=L(), order=[...Array(6).keys()].sort((a,b)=>w[b]-w[a]), mx=Math.max(...w);
+  return el("div",{class:"bars"},order.map((c,n)=>el("div",{class:"bar",style:`--cc:${ccol(c)}`},
+    el("span",{class:"r",text:String(n+1)}),el("span",{class:"t"},el("i",{text:`C${c+1} `}),t.crit[c]),
+    el("span",{class:"tr"},el("span",{style:`width:${(w[c]/mx*100).toFixed(1)}%`})),el("span",{class:"v",text:(w[c]*100).toFixed(1)+"%"}))));
+}
+
+/* storage: the artifact database when available, otherwise this browser */
+function setRows(list){rows=list.filter(r=>r&&Array.isArray(r.a)).map(r=>{const x=ahp(r.a);return {...r,cr:x.CR,w:x.w};}).sort((a,b)=>String(a.t).localeCompare(String(b.t)));render();}
+async function importText(text){
+  const t=L(), codes=[...new Set((text.match(/AHP6-[A-Za-z0-9_-]+-[0-9a-f]{4}/g)||[]))];
+  const bad0=(text.match(/AHP6-\S*/g)||[]).length-(text.match(/AHP6-[A-Za-z0-9_-]+-[0-9a-f]{4}/g)||[]).length;
+  let a=0,d=0,b=Math.max(0,bad0);
+  const have=new Set(rows.map(r=>r.id)), local=S.mode!=="db"?(store.get("ahp6-owner-rows")||[]):null;
+  for(const code of codes){
+    const o=decode(code); if(!o){b++;continue;}
+    const id=idOf(code); if(have.has(id)){d++;continue;}
+    const x=ahp(o.a), doc={id,l:o.l,j:o.j,s:o.s,e:o.e,a:o.a,t:o.t,cr:+x.CR.toFixed(4),w:x.w.map(v=>+v.toFixed(5)),code,src:"code",added:new Date().toISOString()};
+    if(S.mode==="db"){try{await DB.doc(`responses/${id}`).set(doc);a++;have.add(id);}catch{b++;}}
+    else{local.push(doc);a++;have.add(id);}
+  }
+  if(local){store.set("ahp6-owner-rows",local);setRows(local);}
+  S.msg=t.added(a,d,b); S.msgCls=a?"ok":"warn"; render();
+}
+async function remove(id){
+  if(S.mode==="db"){try{await DB.doc(`responses/${id}`).delete();}catch{}}
+  else{const local=(store.get("ahp6-owner-rows")||[]).filter(r=>r.id!==id);store.set("ahp6-owner-rows",local);setRows(local);}
+}
+function csvText(){
+  const en=T.en, q=s=>`"${String(s).replace(/"/g,'""')}"`;
+  const head=["No","Submitted (UTC)","Language","Job","Specialisation","Years of experience","CR",...[1,2,3,4,5,6].map(c=>`w_C${c}`),...PAIRS.map((_,n)=>`Q${n+1} answer`),...PAIRS.map((_,n)=>`Q${n+1} a(A,B)`),"Code"];
+  const lines=rows.map((r,n)=>[n+1,r.t,r.l,"Maintenance officer","Maintenance",en.exps[r.e],r.cr.toFixed(4),...r.w.map(x=>x.toFixed(5)),...r.a.map(k=>en.opts[STEPS.indexOf(k)]),...r.a.map(k=>{const v=valueOf(k);return v>=1?String(v):`1/${intensity(k)}`;}),r.code].map(q).join(","));
+  return "﻿"+[head.map(q).join(","),...lines].join("\r\n");
+}
+async function saveCsv(){
+  const t=L(), name=`ME6097_AHP_responses_${new Date().toISOString().slice(0,10)}.csv`;
+  if(DL){try{const r=await DL.save({filename:name,data:new Blob([csvText()],{type:"text/csv"})});if(r&&r.status==="saved")toast(t.saved);return;}catch(e){if(e&&e.code==="unavailable")DL=null;else return;}}
+  try{const a=el("a",{href:URL.createObjectURL(new Blob([csvText()],{type:"text/csv"})),download:name});document.body.append(a);a.click();a.remove();}catch{copyCsv();}
+}
+async function copyCsv(){try{await navigator.clipboard.writeText(csvText().slice(1));toast(L().copied);}catch{}}
+
+async function connect(){
+  const local=()=>{S.mode="local";setRows(store.get("ahp6-owner-rows")||[]);};
+  if(!window.claude||!window.claude.use){local();return;}
+  try{
+    const [db,dl]=await Promise.all([window.claude.use("db"),window.claude.use("downloads").catch(()=>null)]);
+    DL=dl; if(!db){local();return;}
+    DB=db; S.mode="db";
+    db.collection("responses").onSnapshot(snap=>setRows(snap.docs.map(d=>({...d.data(),id:d.id}))),()=>{S.mode="denied";render();});
+  }catch{local();}
+}
+$("#lang-en").addEventListener("click",()=>{S.lang="en";store.set("ahp6-owner-lang","en");render();});
+$("#lang-ar").addEventListener("click",()=>{S.lang="ar";store.set("ahp6-owner-lang","ar");render();});
+$("#themeBtn").addEventListener("click",()=>{const nx=isDark()?"light":"dark";document.documentElement.setAttribute("data-theme",nx);store.set("ahp6-theme",nx);render();});
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",render);
+render(); connect();
+})();
+</script>
