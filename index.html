@@ -1,12 +1,19 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="ME6097 survey for maintenance officers: power supply priorities for a remote desert site.">
 <title>ME6097 AHP Survey</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='27' cy='11' r='6' fill='%23F2B66C'/%3E%3Cpath d='M4 34l6-16h20l6 16z' fill='%231F4E79'/%3E%3Cpath d='M20 18v16M7 26h26' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap">
 <style>
-/* Respondent page: a short start screen, fifteen comparisons, a review list and a send step. A 3D desert scene (six criterion pillars joined by fifteen arcs, one per question) sits behind a glass panel; on phones the scene sits above the panel. */
+/* Respondent page: a short start screen, fifteen comparisons, a review list and a send step. A 3D desert solar-plus-storage site (six criterion battery cells on a plinth joined by fifteen arcs, one per question, with PV tables, battery containers and a standby genset around them) sits behind a glass panel; on phones the scene sits above the panel. */
 :root{
   --bg:#EDF1F2; --glass:rgba(255,255,255,.84); --glass-2:rgba(14,34,48,.035); --line:rgba(14,34,48,.12); --line-2:rgba(14,34,48,.22);
-  --ink:#0E2230; --muted:#4A606C; --accent:#9C5F0A; --accent-ink:#FFFFFF; --ok:#1F7A4A; --warn:#9A5F00; --wa:#128C4B;
+  --ink:#0E2230; --muted:#4A606C; --accent:#9C5F0A; --accent-ink:#FFFFFF; --ok:#1F7A4A; --warn:#9A5F00; --bad:#B3261E; --wa:#128C4B;
   --c1:#13747B; --c2:#A3640B; --c3:#BC4A31; --c4:#2A66A8; --c5:#457F25; --c6:#6E4DB0;
   --sky-top:#86B6D2; --sky-hz:#F2E5D0; --sun:#FFD9A6; --terrain:#DDBA88; --slab:#CBBFAD; --halo:rgba(255,255,255,.85);
   --shadow:0 40px 90px -50px rgba(14,34,48,.55);
@@ -14,13 +21,13 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#08101B; --glass:rgba(9,16,28,.76); --glass-2:rgba(255,255,255,.045); --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.22);
-  --ink:#EEF3F5; --muted:#A2B3BD; --accent:#F2B66C; --accent-ink:#1B1205; --ok:#5FC891; --warn:#F2B04E; --wa:#25D366;
+  --ink:#EEF3F5; --muted:#A2B3BD; --accent:#F2B66C; --accent-ink:#1B1205; --ok:#5FC891; --warn:#F2B04E; --bad:#F2867D; --wa:#25D366;
   --c1:#4CC2BA; --c2:#F0C47A; --c3:#F08A6C; --c4:#78B0EE; --c5:#A8D576; --c6:#BBA0F0;
   --sky-top:#050A15; --sky-hz:#3A2B3B; --sun:#F59A57; --terrain:#8C694B; --slab:#1B2331; --halo:rgba(4,9,18,.7);
   --shadow:0 40px 90px -40px rgba(0,0,0,.85); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#08101B; --glass:rgba(9,16,28,.76); --glass-2:rgba(255,255,255,.045); --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.22);
-  --ink:#EEF3F5; --muted:#A2B3BD; --accent:#F2B66C; --accent-ink:#1B1205; --ok:#5FC891; --warn:#F2B04E; --wa:#25D366;
+  --ink:#EEF3F5; --muted:#A2B3BD; --accent:#F2B66C; --accent-ink:#1B1205; --ok:#5FC891; --warn:#F2B04E; --bad:#F2867D; --wa:#25D366;
   --c1:#4CC2BA; --c2:#F0C47A; --c3:#F08A6C; --c4:#78B0EE; --c5:#A8D576; --c6:#BBA0F0;
   --sky-top:#050A15; --sky-hz:#3A2B3B; --sun:#F59A57; --terrain:#8C694B; --slab:#1B2331; --halo:rgba(4,9,18,.7);
   --shadow:0 40px 90px -40px rgba(0,0,0,.85); color-scheme:dark}
@@ -143,13 +150,21 @@ p{margin:0}
 @keyframes fade{from{opacity:.001;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:480px){.brand small{display:none}.brand b{font-size:14.5px;white-space:nowrap}.brand svg{width:28px;height:28px}.brand{gap:8px}.tools{gap:6px}.seg button{padding:3px 10px}.icon{width:34px;height:34px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid currentColor;border-top-color:transparent;animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.more{border:1px solid var(--line);border-radius:16px;background:var(--glass-2);padding:2px 14px}
+.more summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--muted);padding:9px 0;list-style-position:inside}
+.more[open]{padding-bottom:14px}
+.more>div{display:grid;gap:12px}
+.alert.err{color:var(--bad);background:color-mix(in srgb,var(--bad) 9%,transparent);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
 </style>
-
+</head>
+<body>
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="shell" id="app" dir="ltr" lang="en">
   <header class="top">
     <div class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2"><path d="M20 4 33.9 12v16L20 36 6.1 28V12z"/><path d="M20 4 20 36M6.1 12 33.9 28M33.9 12 6.1 28"/></g><circle cx="20" cy="4" r="3.2" fill="var(--c1)"/><circle cx="33.9" cy="12" r="3.2" fill="var(--c2)"/><circle cx="33.9" cy="28" r="3.2" fill="var(--c3)"/><circle cx="20" cy="36" r="3.2" fill="var(--c4)"/><circle cx="6.1" cy="28" r="3.2" fill="var(--c5)"/><circle cx="6.1" cy="12" r="3.2" fill="var(--c6)"/></svg>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><g stroke-width="2.2" stroke-linecap="round"><path d="M27 1.8v2.6" stroke="var(--c1)"/><path d="M34.1 4.9l-1.8 1.8" stroke="var(--c2)"/><path d="M37.2 12h-2.6" stroke="var(--c3)"/><path d="M34.1 19.1l-1.8-1.8" stroke="var(--c4)"/><path d="M19.9 4.9l1.8 1.8" stroke="var(--c5)"/><path d="M16.8 12h2.6" stroke="var(--c6)"/></g><circle cx="27" cy="12" r="4.4" fill="var(--accent)"/><path d="M3.5 37 8.6 22.5h19.8L33.5 37z" fill="color-mix(in srgb,var(--c4) 30%,transparent)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M18.5 22.5 18.5 37M6 29.8h25M11.9 22.5 9.3 37M25.1 22.5l2.6 14.5" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1"/></svg>
       <div><b id="t-brand"></b><small id="t-sub"></small></div>
     </div>
     <div class="tools">
@@ -170,6 +185,8 @@ p{margin:0}
 <script>
 (() => {
 "use strict";
+/* Google Apps Script web app that writes each response to the "ME6097 AHP Responses" sheet (apps_script/Code.gs). */
+const SUBMIT_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
 /* ------------------------------------------------------------ content */
 const T = {
  en:{
@@ -198,6 +215,11 @@ const T = {
   codeNote:"Your answer code (it holds your answers only, no name):",
   waMsg:"ME6097 AHP survey response",
   again:"Start a new response",
+  sending:"Sending…",
+  sentH:"Thank you, your answers were received", sentLead:"Your answers reached the researcher. Nothing more is needed from you.",
+  waAlt:"Only if the researcher asks: send by WhatsApp",
+  failH:"Your answers were not sent yet", failLead:"The connection to the researcher's server failed. Your answers are kept on this phone. Try again, or send them by WhatsApp.",
+  retry:"Try sending again",
   hud:"DRAG TO ROTATE", theme:"Switch light or dark theme",
   crit:[
    ["Lifetime cost","Total cost of buying, installing, running, maintaining, fuelling and replacing the system over 25 years."],
@@ -233,6 +255,11 @@ const T = {
   codeNote:"رمز إجابتك (يحتوي على إجاباتك فقط، بلا اسم):",
   waMsg:"إجابة استبيان ME6097",
   again:"ابدأ إجابة جديدة",
+  sending:"جارٍ الإرسال…",
+  sentH:"شكراً لك، وصلت إجاباتك", sentLead:"وصلت إجاباتك إلى الباحث، ولا يلزمك أي إجراء آخر.",
+  waAlt:"فقط إذا طلب الباحث ذلك: الإرسال عبر واتساب",
+  failH:"لم تُرسَل إجاباتك بعد", failLead:"تعذّر الاتصال بخادم الباحث. إجاباتك محفوظة على هذا الجهاز. أعد المحاولة، أو أرسلها عبر واتساب.",
+  retry:"أعد محاولة الإرسال",
   hud:"اسحب للتدوير", theme:"تبديل الوضع الفاتح أو الداكن",
   crit:[
    ["التكلفة الإجمالية على عمر المشروع","مجموع تكلفة الشراء والتركيب والتشغيل والصيانة والوقود والاستبدال على مدى 25 سنة."],
@@ -269,12 +296,13 @@ const sum4=s=>{let h=2166136261;for(const c of s){h^=c.codePointAt(0);h=Math.imu
 function encode(r){const body=b64e(JSON.stringify({v:1,l:r.l,j:r.j,s:r.s,e:r.e,a:r.a,t:r.t}));return `AHP6-${body}-${sum4(body)}`;}
 
 /* ------------------------------------------------------------ state */
-const S={lang:"en",screen:"intro",q:0,ans:Array(15).fill(null),e:null,code:"",fromReview:false};
+const S={lang:"en",screen:"intro",q:0,ans:Array(15).fill(null),e:null,code:"",fromReview:false,sending:false,sent:false,pend:null};
 const store={get(k){try{return JSON.parse(localStorage.getItem(k)||"null");}catch{return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},del(k){try{localStorage.removeItem(k);}catch{}}};
 const draft=store.get("ahp6-draft");
-if(draft&&Array.isArray(draft.ans)&&draft.ans.length===15){Object.assign(S,{ans:draft.ans,e:draft.e??null,lang:draft.lang||"en"});}
+if(draft&&Array.isArray(draft.ans)&&draft.ans.length===15){Object.assign(S,{ans:draft.ans,e:draft.e??null,lang:draft.lang||"en",pend:draft.pend||null});}
 else{try{if((navigator.language||"").startsWith("ar"))S.lang="ar";}catch{}}
-const saveDraft=()=>store.set("ahp6-draft",{ans:S.ans,e:S.e,lang:S.lang});
+/* the draft stays until the server confirms; pend keeps the code of an unsent attempt so a retry sends the same code (the sheet ignores repeats) */
+const saveDraft=()=>store.set("ahp6-draft",{ans:S.ans,e:S.e,lang:S.lang,pend:S.pend});
 const L=()=>T[S.lang];
 const answered=()=>S.ans.filter(v=>v!=null).length;
 const $=s=>document.querySelector(s);
@@ -378,32 +406,54 @@ function review(){
     el("span",{class:"eyebrow",text:t.reviewEyebrow}), el("h2",{text:t.reviewH}), el("p",{class:"note",text:t.reviewLead}),
     flagged.size?el("div",{class:"alert"},el("span",{html:ICON.warn,style:"display:contents"}),el("span",{text:t.inconsistent})):null,
     el("div",{class:"rlist"},items),
-    el("button",{class:"cta wide",id:"submitBtn",disabled:!all||S.e==null,onclick:submit},t.send,el("span",{html:ICON.arrow,style:"display:contents"})));
+    S.sending?el("button",{class:"cta wide",id:"submitBtn",disabled:true,"aria-busy":"true"},el("span",{class:"spin"}),t.sending)
+      :el("button",{class:"cta wide",id:"submitBtn",disabled:!all||S.e==null,onclick:submit},t.send,el("span",{html:ICON.arrow,style:"display:contents"})));
 }
 function waLink(){const t=L();return "https://wa.me/?text="+encodeURIComponent(`${t.waMsg}\n${S.code}`);}
 function done(){
   const t=L(), code=el("div",{class:"code",id:"code",text:S.code});
-  return el("div",{class:"stack"},
+  const waBtn=el("a",{class:"cta wa wide",id:"waBtn",href:waLink(),target:"_blank",rel:"noopener"},el("span",{html:ICON.wa,style:"display:contents"}),t.wa);
+  const copyBtn=el("button",{class:"cta alt",onclick:()=>copy(S.code,code)},el("span",{html:ICON.copy,style:"display:contents"}),t.copy);
+  if(S.sent) return el("div",{class:"stack"},
     el("span",{class:"check",html:ICON.check}),
-    el("h2",{text:t.doneH}), el("p",{class:"lead",text:t.doneLead}),
+    el("h2",{text:t.sentH}), el("p",{class:"lead",text:t.sentLead}),
+    el("details",{class:"more"},el("summary",{text:t.waAlt}),el("div",{},waBtn,el("p",{class:"note",text:t.codeNote}),code,el("div",{class:"row"},copyBtn))),
+    el("div",{class:"row"},el("button",{class:"cta alt",onclick:()=>{S.ans=Array(15).fill(null);S.q=0;S.e=null;S.code="";S.sent=false;S.pend=null;store.del("ahp6-draft");S.screen="intro";render();}},t.again)));
+  return el("div",{class:"stack"},
+    el("div",{class:"alert err",role:"alert"},el("span",{html:ICON.warn,style:"display:contents"}),el("span",{text:t.failH})),
+    el("p",{class:"lead",text:t.failLead}),
+    S.sending?el("button",{class:"cta wide",id:"retryBtn",disabled:true,"aria-busy":"true"},el("span",{class:"spin"}),t.sending)
+      :el("button",{class:"cta wide",id:"retryBtn",onclick:submit},t.retry,el("span",{html:ICON.arrow,style:"display:contents"})),
     el("ol",{class:"steps"},t.stepsWa.map(s=>el("li",{text:s}))),
-    el("a",{class:"cta wa wide",id:"waBtn",href:waLink(),target:"_blank",rel:"noopener"},el("span",{html:ICON.wa,style:"display:contents"}),t.wa),
-    el("p",{class:"note",text:t.codeNote}), code,
-    el("div",{class:"row end"},
-      el("button",{class:"cta alt",onclick:()=>copy(S.code,code)},el("span",{html:ICON.copy,style:"display:contents"}),t.copy),
-      el("button",{class:"cta alt",onclick:()=>{S.ans=Array(15).fill(null);S.q=0;S.code="";store.del("ahp6-draft");S.screen="intro";render();}},t.again)));
+    waBtn, el("p",{class:"note",text:t.codeNote}), code,
+    el("div",{class:"row"},copyBtn));
 }
 async function copy(text,node){
   try{await navigator.clipboard.writeText(text);toast(L().copied);}
   catch{try{const rg=document.createRange();rg.selectNodeContents(node);const s=getSelection();s.removeAllRanges();s.addRange(rg);}catch{}toast(L().copyFail);}
 }
-function submit(){
-  if(answered()<15||S.e==null) return;
-  S.code=encode({l:S.lang,j:ROLE[S.lang],s:ROLE_SPEC,e:S.e,a:S.ans.slice(),t:new Date().toISOString()});
-  store.set("ahp6-last",S.code); S.screen="done"; render();
+async function submit(){
+  if(answered()<15||S.e==null||S.sending) return;
+  const sig=JSON.stringify([S.lang,S.e,S.ans]);
+  if(!S.pend||S.pend.sig!==sig){const t=new Date().toISOString();S.pend={sig,t,code:encode({l:S.lang,j:ROLE[S.lang],s:ROLE_SPEC,e:S.e,a:S.ans.slice(),t})};}
+  S.code=S.pend.code; saveDraft(); store.set("ahp6-last",S.code);
+  const r=ahp(S.ans), body={code:S.code,l:S.lang,j:ROLE[S.lang],s:ROLE_SPEC,e:S.e,a:S.ans.slice(),t:S.pend.t,cr:+r.CR.toFixed(4),w:r.w.map(v=>+v.toFixed(5))};
+  S.sending=true; render();
+  let ok=false;
+  try{
+    if(!/^https:\/\//.test(SUBMIT_URL)&&!/^http:\/\/(localhost|127\.0\.0\.1)[:/]/.test(SUBMIT_URL)) throw new Error("SUBMIT_URL not set");
+    const ac=new AbortController(), timer=setTimeout(()=>ac.abort(),25000);
+    const res=await fetch(SUBMIT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body),signal:ac.signal,redirect:"follow"});
+    clearTimeout(timer);
+    const js=await res.json().catch(()=>null);
+    ok=!!(res.ok&&js&&js.ok);
+  }catch{ok=false;}
+  S.sending=false; S.sent=ok;
+  if(ok){S.pend=null;store.del("ahp6-draft");}
+  S.screen="done"; render();
 }
 
-/* ------------------------------------------------------------ 3D scene: six criterion pillars on a plinth in the dunes, joined by fifteen arcs (one per question) */
+/* ------------------------------------------------------------ 3D scene: six criterion battery cells on a plinth in a desert solar site, joined by fifteen arcs (one per question) */
 const scene=(()=>{
   const api={update(){}};
   const canvas=$("#gl");
@@ -432,13 +482,13 @@ const scene=(()=>{
   /* lights */
   const hemi=new THREE.HemisphereLight(0xffffff,0x222222,.7); sc.add(hemi);
   const sunL=new THREE.DirectionalLight(0xffffff,1.3); sunL.position.copy(SUN).multiplyScalar(45); sc.add(sunL,sunL.target);
-  sunL.castShadow=true; sunL.shadow.mapSize.set(1024,1024);
-  Object.assign(sunL.shadow.camera,{left:-12,right:12,top:12,bottom:-12,near:1,far:110}); sunL.shadow.camera.updateProjectionMatrix();
+  sunL.castShadow=true; sunL.shadow.mapSize.set(2048,2048);
+  Object.assign(sunL.shadow.camera,{left:-21,right:21,top:21,bottom:-21,near:1,far:110}); sunL.shadow.camera.updateProjectionMatrix();
   sunL.shadow.bias=-.0005; sunL.shadow.normalBias=.03;
   const fill=new THREE.DirectionalLight(0xffffff,.4); fill.position.set(10,8,16); sc.add(fill);
 
-  /* low-poly dunes with a flat plateau in the middle */
-  function dune(x,z){const r=Math.hypot(x,z), m=sm(10.5,27,r);
+  /* low-poly dunes with a flat plateau in the middle (wide enough for the solar field) */
+  function dune(x,z){const r=Math.hypot(x,z), m=sm(18,36,r);
     const u=x*.15+z*.1+Math.sin(z*.045+x*.02)*1.8, crest=Math.pow(1-Math.abs(Math.sin(u)),2.4);
     const sw=.5+.5*Math.sin(x*.045-z*.08+1.3);
     const n=Math.sin(x*.41+z*.23)*.14+Math.sin(x*.17-z*.31)*.2+Math.sin(x*.07+z*.05)*.5;
@@ -447,6 +497,77 @@ const scene=(()=>{
   {const p=TG.attributes.position;for(let n=0;n<p.count;n++)p.setY(n,dune(p.getX(n),p.getZ(n)));TG.computeVertexNormals();}
   const terrMat=new THREE.MeshStandardMaterial({flatShading:true,roughness:.95,metalness:0});
   const terrain=new THREE.Mesh(TG,terrMat); terrain.receiveShadow=true; sc.add(terrain);
+
+  /* the site around the plinth: PV tables, two battery containers (BESS), a standby diesel genset and the workshop.
+     It stays still while the plinth turns, so the officer always sees the same plant. */
+  const site=new THREE.Group(); sc.add(site);
+  const ANISO=Math.min(8,renderer.capabilities.getMaxAnisotropy?renderer.capabilities.getMaxAnisotropy():1);
+  function canvasTex(w,h,paint){const c=document.createElement("canvas");c.width=w;c.height=h;paint(c.getContext("2d"),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=ANISO;return t;}
+  const pvTex=canvasTex(512,256,(x,w,h)=>{          // 4 x 2 modules, 6 x 10 mono cells each, aluminium frames
+    x.fillStyle="#C9D2DB"; x.fillRect(0,0,w,h);
+    const mw=w/4, mh=h/2;
+    for(let m=0;m<4;m++)for(let r=0;r<2;r++){const ox=m*mw+3, oy=r*mh+3, cw=(mw-6)/6, ch=(mh-6)/10;
+      x.fillStyle="#0B1F3A"; x.fillRect(ox,oy,mw-6,mh-6);
+      for(let i=0;i<6;i++)for(let j=0;j<10;j++){const g=x.createLinearGradient(ox+i*cw,oy+j*ch,ox+(i+1)*cw,oy+(j+1)*ch);
+        g.addColorStop(0,"#1C4478");g.addColorStop(1,"#12305A"); x.fillStyle=g; x.fillRect(ox+i*cw+.8,oy+j*ch+.8,cw-1.6,ch-1.6);}
+      x.strokeStyle="rgba(205,220,235,.35)"; x.lineWidth=.6;
+      for(let i=0;i<6;i++){x.beginPath();x.moveTo(ox+(i+.33)*cw,oy);x.lineTo(ox+(i+.33)*cw,oy+mh-6);x.moveTo(ox+(i+.66)*cw,oy);x.lineTo(ox+(i+.66)*cw,oy+mh-6);x.stroke();}}
+  });
+  const pvMat=new THREE.MeshStandardMaterial({map:pvTex,roughness:.3,metalness:.25});
+  const frameMat=new THREE.MeshStandardMaterial({color:0x9AA4AE,roughness:.5,metalness:.6});
+  const PVW=3.4, PVD=1.7, TILT=.32;                   // one table: 3.4 m x 1.7 m, ~18 deg tilt facing the camera (south)
+  const tables=[];
+  const flatR=17;
+  for(const z of [-9.4,-12,-14.6]) for(let x=-15.75;x<=15.8;x+=3.75) if(Math.hypot(x,z)<flatR&&(z<-10||Math.abs(x)<5)) tables.push([x,z]);   // front row centre only: BESS and genset sit beside it
+  for(const s of [-1,1]) for(const x of [9.4,13.15]) for(let z=-6.4;z<=1.4;z+=2.6) if(Math.hypot(x,z)<flatR) tables.push([s*x,z]);
+  const pvGeo=new THREE.BoxGeometry(PVW,.06,PVD), postGeo=new THREE.BoxGeometry(.08,1,.08);
+  const pv=new THREE.InstancedMesh(pvGeo,pvMat,tables.length), posts=new THREE.InstancedMesh(postGeo,frameMat,tables.length*4);
+  pv.castShadow=pv.receiveShadow=true; posts.castShadow=true;
+  {const d=new THREE.Object3D(); let k=0;
+    tables.forEach(([x,z],n)=>{const y=dune(x,z)+.03, yc=y+.95;
+      d.position.set(x,yc,z); d.rotation.set(TILT,0,0); d.scale.set(1,1,1); d.updateMatrix(); pv.setMatrixAt(n,d.matrix);
+      for(const sx of [-1.35,1.35]) for(const sz of [-1,1]){const zz=z+sz*PVD*.38*Math.cos(TILT), top=yc-sz*PVD*.38*Math.sin(TILT)-.04, hgt=top-y;
+        d.position.set(x+sx,y+hgt/2,zz); d.rotation.set(0,0,0); d.scale.set(1,hgt,1); d.updateMatrix(); posts.setMatrixAt(k++,d.matrix);}});
+  }
+  site.add(pv,posts);
+  /* battery containers */
+  const bessSide=canvasTex(512,200,(x,w,h)=>{
+    x.fillStyle="#E9ECEE"; x.fillRect(0,0,w,h);
+    for(let i=0;i<w;i+=10){x.fillStyle="rgba(0,0,0,.07)";x.fillRect(i,0,4,h);}
+    x.strokeStyle="rgba(40,50,60,.45)"; x.lineWidth=2; for(let d=0;d<4;d++)x.strokeRect(14+d*124,14,112,h-28);
+    x.fillStyle="#2F9E6B"; x.fillRect(0,h-16,w,16);
+    // battery symbol
+    x.save(); x.translate(w/2-60,h/2-30); x.lineWidth=6; x.strokeStyle="#2F9E6B"; x.strokeRect(0,0,108,60); x.fillStyle="#2F9E6B"; x.fillRect(108,18,10,24);
+    x.fillRect(10,10,24,40); x.fillRect(40,10,24,40); x.fillRect(70,10,24,40); x.restore();
+    x.fillStyle="#18A058"; for(let d=0;d<4;d++){x.beginPath();x.arc(30+d*124,34,5,0,7);x.fill();}
+  });
+  const bessEnd=canvasTex(200,200,(x,w,h)=>{x.fillStyle="#E1E5E8";x.fillRect(0,0,w,h);x.fillStyle="#9AA4AE";x.fillRect(40,40,120,90);
+    x.strokeStyle="#6E7882";x.lineWidth=3;for(let y=50;y<126;y+=9){x.beginPath();x.moveTo(48,y);x.lineTo(152,y);x.stroke();}x.fillStyle="#2F9E6B";x.fillRect(0,h-16,w,16);});
+  const plain=c=>new THREE.MeshStandardMaterial({color:c,roughness:.7,metalness:.1});
+  const bessMats=[new THREE.MeshStandardMaterial({map:bessEnd,roughness:.6}),new THREE.MeshStandardMaterial({map:bessEnd,roughness:.6}),plain(0xD9DDE0),plain(0xD9DDE0),
+    new THREE.MeshStandardMaterial({map:bessSide,roughness:.6}),new THREE.MeshStandardMaterial({map:bessSide,roughness:.6})];
+  const BESS=[[7.4,-9.4],[12.4,-9.4]].map(([x,z])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(4.6,1.9,1.9),bessMats);m.position.set(x,dune(x,z)+.95,z);m.castShadow=m.receiveShadow=true;site.add(m);
+    const pad=new THREE.Mesh(new THREE.BoxGeometry(5,.12,2.3),plain(0xB9B2A6));pad.position.set(x,dune(x,z)+.06,z);pad.receiveShadow=true;site.add(pad);return m;});
+  /* standby diesel genset (restricted use) */
+  const genSide=canvasTex(256,128,(x,w,h)=>{x.fillStyle="#4F5B4A";x.fillRect(0,0,w,h);x.fillStyle="#3C4639";for(let y=18;y<h-18;y+=8)x.fillRect(150,y,86,4);
+    x.strokeStyle="rgba(255,255,255,.18)";x.lineWidth=2;x.strokeRect(14,14,120,h-28);x.fillStyle="#E0A030";x.fillRect(0,h-10,w,10);});
+  const genMat=new THREE.MeshStandardMaterial({map:genSide,roughness:.65,metalness:.2});
+  const gx=-7.6, gz=-9.4, gy=dune(gx,gz);
+  const gen=new THREE.Mesh(new THREE.BoxGeometry(3,1.45,1.5),[plain(0x46523F),plain(0x46523F),plain(0x55614D),plain(0x46523F),genMat,genMat]);
+  gen.position.set(gx,gy+.78,gz); gen.castShadow=gen.receiveShadow=true; site.add(gen);
+  const stack=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.9,10),plain(0x2A2E2C)); stack.position.set(gx+.95,gy+1.95,gz-.3); site.add(stack);
+  const tank=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,2.2,20),plain(0xC9C2B4)); tank.rotation.z=Math.PI/2; tank.position.set(gx-3.3,gy+.62,gz); tank.castShadow=true; site.add(tank);
+  /* the facility: a maintenance hangar and a block behind the solar field */
+  const wallTex=canvasTex(256,96,(x,w,h)=>{x.fillStyle="#DCD1BC";x.fillRect(0,0,w,h);x.fillStyle="#B9AD96";x.fillRect(0,h-8,w,8);
+    x.fillStyle="#6F7780";x.fillRect(96,30,64,h-38);x.strokeStyle="#59616A";x.lineWidth=2;for(let y=36;y<h-8;y+=8){x.beginPath();x.moveTo(96,y);x.lineTo(160,y);x.stroke();}
+    x.fillStyle="#3E5266";for(const wx of [18,52,186,220])x.fillRect(wx,26,22,16);});
+  const blockTex=canvasTex(192,112,(x,w,h)=>{x.fillStyle="#E4DAC6";x.fillRect(0,0,w,h);x.fillStyle="#3E5266";for(let r=0;r<2;r++)for(let c=0;c<5;c++)x.fillRect(14+c*36,18+r*44,20,24);x.fillStyle="#C2B59C";x.fillRect(0,h-6,w,6);});
+  const hang=new THREE.Group(); hang.position.set(-11.6,dune(-11.6,-17.5),-17.5); site.add(hang);
+  {const wm=new THREE.MeshStandardMaterial({map:wallTex,roughness:.85}), bm=new THREE.MeshStandardMaterial({map:blockTex,roughness:.85});
+   const b=new THREE.Mesh(new THREE.BoxGeometry(7,2.2,4.2),[plain(0xD8CDB8),plain(0xD8CDB8),plain(0xD8CDB8),plain(0xD8CDB8),wm,wm]);b.position.y=1.1;b.castShadow=b.receiveShadow=true;hang.add(b);
+   const roof=new THREE.Mesh(new THREE.CylinderGeometry(2.1,2.1,7,24,1,false,0,Math.PI),plain(0xB8B4AE));roof.rotation.set(0,0,Math.PI/2);roof.rotation.order="ZXY";roof.position.y=2.2;roof.castShadow=true;hang.add(roof);
+   const blk=new THREE.Mesh(new THREE.BoxGeometry(4.5,2.6,3.4),[plain(0xE2D8C4),plain(0xE2D8C4),plain(0xE2D8C4),plain(0xE2D8C4),bm,bm]);blk.position.set(8.6,1.3,-.6);blk.castShadow=blk.receiveShadow=true;hang.add(blk);}
+  const plantMats={pv:pvMat,frame:frameMat,bess:bessMats,gen:genMat};
 
   /* plinth and survey ring */
   const slabMat=new THREE.MeshStandardMaterial({flatShading:true,roughness:.75,metalness:.2});
@@ -461,7 +582,12 @@ const scene=(()=>{
 
   /* pillars */
   const R=3.35, TOP=.36;
-  const beamGeo=new THREE.CylinderGeometry(.5,.5,9,6,1,true); beamGeo.translate(0,4.5,0);
+  const beamGeo=new THREE.CylinderGeometry(.5,.5,9,28,1,true); beamGeo.translate(0,4.5,0);
+  /* each criterion is a battery cell: the casing grows like a charge gauge, one bar per 0.42 m */
+  const cellCanvas=document.createElement("canvas"); cellCanvas.width=4; cellCanvas.height=64;
+  {const x=cellCanvas.getContext("2d"); x.fillStyle="#ffffff"; x.fillRect(0,0,4,64); x.fillStyle="#7d848c"; x.fillRect(0,0,4,5);}
+  const termMat=new THREE.MeshStandardMaterial({color:0xC4CBD2,roughness:.25,metalness:.85});
+  const termGeo=new THREE.CylinderGeometry(.17,.19,.16,20), sleeveGeo=new THREE.CylinderGeometry(.5,.5,.14,28,1,true);
   let fontsReady=0;
   function makeLabel(){const c=document.createElement("canvas");c.width=160;c.height=96;const x=c.getContext("2d");const tex=new THREE.CanvasTexture(c);
     const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false,depthTest:false}));sp.renderOrder=30;sp.scale.set(1.15,.69,1);sp.userData={c,x,tex,key:""};return sp;}
@@ -472,18 +598,21 @@ const scene=(()=>{
   const P=[...Array(6)].map((_,i)=>{
     const a=i*Math.PI/3, pos=V(Math.sin(a)*R,TOP,Math.cos(a)*R);
     const g=new THREE.Group(); g.position.copy(pos); world.add(g);
-    const geo=new THREE.CylinderGeometry(.5,.5,1,6); geo.translate(0,.5,0);
-    const body=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({flatShading:true,roughness:.35,metalness:.15})); body.castShadow=body.receiveShadow=true; g.add(body);
-    const edges=new THREE.LineSegments(new THREE.EdgesGeometry(geo),lineMat()); body.add(edges);
-    const cap=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.05,6),new THREE.MeshBasicMaterial()); g.add(cap);
-    const base=new THREE.Mesh(new THREE.RingGeometry(.66,.78,6),new THREE.MeshBasicMaterial({transparent:true,side:THREE.DoubleSide,depthWrite:false})); base.rotation.x=-Math.PI/2; base.position.y=.012; g.add(base);
-    const pulse=new THREE.Mesh(new THREE.RingGeometry(.6,.72,6),new THREE.MeshBasicMaterial({transparent:true,side:THREE.DoubleSide,depthWrite:false,opacity:0})); pulse.rotation.x=-Math.PI/2; pulse.position.y=.02; g.add(pulse);
+    const geo=new THREE.CylinderGeometry(.46,.46,1,28); geo.translate(0,.5,0);
+    const map=new THREE.CanvasTexture(cellCanvas); map.wrapS=map.wrapT=THREE.RepeatWrapping; map.anisotropy=ANISO;
+    const body=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({map,emissiveMap:map,roughness:.32,metalness:.2})); body.castShadow=body.receiveShadow=true; g.add(body);
+    const edges=new THREE.LineSegments(new THREE.EdgesGeometry(geo,30),lineMat()); body.add(edges);
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.05,28),new THREE.MeshBasicMaterial()); g.add(cap);
+    const sleeve=new THREE.Mesh(sleeveGeo,termMat); g.add(sleeve);
+    const term=new THREE.Mesh(termGeo,termMat); term.castShadow=true; g.add(term);
+    const base=new THREE.Mesh(new THREE.RingGeometry(.66,.78,40),new THREE.MeshBasicMaterial({transparent:true,side:THREE.DoubleSide,depthWrite:false})); base.rotation.x=-Math.PI/2; base.position.y=.012; g.add(base);
+    const pulse=new THREE.Mesh(new THREE.RingGeometry(.6,.72,40),new THREE.MeshBasicMaterial({transparent:true,side:THREE.DoubleSide,depthWrite:false,opacity:0})); pulse.rotation.x=-Math.PI/2; pulse.position.y=.02; g.add(pulse);
     const bu={uC:{value:new THREE.Color()},uO:{value:0}};
     const beam=new THREE.Mesh(beamGeo,new THREE.ShaderMaterial({uniforms:bu,transparent:true,depthWrite:false,side:THREE.DoubleSide,
       vertexShader:"varying float vY;void main(){vY=uv.y;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}",
       fragmentShader:"uniform vec3 uC;uniform float uO;varying float vY;void main(){float a=pow(1.0-vY,2.2)*uO;gl_FragColor=vec4(uC,a);}"})); g.add(beam);
     const lab=makeLabel(); g.add(lab);
-    return {g,body,edges,cap,base,pulse,beam,bu,lab,pos,h:1.8,th:1.8,em:1,tem:1,lo:1,tlo:1,beamT:0};
+    return {g,body,map,edges,cap,sleeve,term,base,pulse,beam,bu,lab,pos,h:1.8,th:1.8,em:1,tem:1,lo:1,tlo:1,beamT:0};
   });
   try{document.fonts.load("800 64px Cairo").then(()=>{fontsReady=1;api.update();}).catch(()=>{});}catch{}
 
@@ -639,7 +768,7 @@ const scene=(()=>{
     wz+=(wzT-wz)*slow; world.position.z=wz;
     P.forEach((p,i)=>{
       const bob=mode==="done"&&!reduce?Math.sin(t*1.6+i*1.05)*.35:0;
-      p.h+=(p.th+bob-p.h)*ease; p.body.scale.y=p.h; p.cap.position.y=p.h+.025; p.beam.position.y=p.h; p.lab.position.y=p.h+.75;
+      p.h+=(p.th+bob-p.h)*ease; p.body.scale.y=p.h; p.map.repeat.y=p.h/.42; p.cap.position.y=p.h+.025; p.sleeve.position.y=p.h-.06; p.term.position.y=p.h+.13; p.beam.position.y=p.h; p.lab.position.y=p.h+.75;
       p.em+=(p.tem-p.em)*ease; p.lo+=(p.tlo-p.lo)*ease;
       p.body.material.color.copy(SLAB).lerp(C[i],.25+.75*p.em);
       p.body.material.emissive.copy(C[i]).multiplyScalar((dark?.42:.12)*(.15+.85*p.em));
@@ -707,3 +836,5 @@ addEventListener("keydown",e=>{
 setLang(S.lang);
 })();
 </script>
+</body>
+</html>

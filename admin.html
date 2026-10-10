@@ -1,4 +1,12 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
 <title>AHP Responses ME6097</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='27' cy='11' r='6' fill='%23F2B66C'/%3E%3Cpath d='M4 34l6-16h20l6 16z' fill='%231F4E79'/%3E%3Cpath d='M20 18v16M7 26h26' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap">
@@ -93,15 +101,26 @@ tr.det td{background:var(--card-2);white-space:normal;padding:12px 14px}
 .code{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--muted);word-break:break-all;direction:ltr;text-align:left}
 .toast{position:fixed;inset-inline:16px;bottom:18px;margin-inline:auto;max-width:440px;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;text-align:center;font-weight:700;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;z-index:9}
 .toast.on{opacity:1;transform:none}
+input.key{width:100%;min-height:44px;border:1px solid var(--line-2);background:var(--card-2);border-radius:12px;padding:8px 14px;font:inherit;color:inherit;direction:ltr;text-align:left}
+.gate{max-width:520px;width:100%;margin:6vh auto 0}
+.icon.txt{width:auto;padding:0 12px;font-weight:700;font-size:13.5px;gap:6px;display:inline-flex;align-items:center}
+.spin{width:16px;height:16px;border-radius:50%;border:2.5px solid currentColor;border-top-color:transparent;animation:spin .8s linear infinite;display:inline-block;vertical-align:-3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.msg.bad{color:var(--bad)}
+@media (max-width:520px){.tools .icon.txt span.lbl{display:none}}
 </style>
+</head>
+<body>
 
 <div class="wrap" id="app" dir="rtl" lang="ar">
   <header class="top">
     <div class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2"><path d="M20 4 33.9 12v16L20 36 6.1 28V12z"/><path d="M20 4 20 36M6.1 12 33.9 28M33.9 12 6.1 28"/></g><circle cx="20" cy="4" r="3.2" fill="var(--c1)"/><circle cx="33.9" cy="12" r="3.2" fill="var(--c2)"/><circle cx="33.9" cy="28" r="3.2" fill="var(--c3)"/><circle cx="20" cy="36" r="3.2" fill="var(--c4)"/><circle cx="6.1" cy="28" r="3.2" fill="var(--c5)"/><circle cx="6.1" cy="12" r="3.2" fill="var(--c6)"/></svg>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><g stroke-width="2.2" stroke-linecap="round"><path d="M27 1.8v2.6" stroke="var(--c1)"/><path d="M34.1 4.9l-1.8 1.8" stroke="var(--c2)"/><path d="M37.2 12h-2.6" stroke="var(--c3)"/><path d="M34.1 19.1l-1.8-1.8" stroke="var(--c4)"/><path d="M19.9 4.9l1.8 1.8" stroke="var(--c5)"/><path d="M16.8 12h2.6" stroke="var(--c6)"/></g><circle cx="27" cy="12" r="4.4" fill="var(--accent)"/><path d="M3.5 37 8.6 22.5h19.8L33.5 37z" fill="color-mix(in srgb,var(--c4) 30%,transparent)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M18.5 22.5 18.5 37M6 29.8h25M11.9 22.5 9.3 37M25.1 22.5l2.6 14.5" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1"/></svg>
       <div><b id="t-brand"></b><small id="t-sub"></small></div>
     </div>
     <div class="tools">
+      <button class="icon txt" id="refreshBtn" hidden></button>
+      <button class="icon txt" id="outBtn" hidden></button>
       <button class="icon" id="themeBtn" aria-label="Theme"></button>
       <div class="seg" role="group" aria-label="Language"><button id="lang-en" aria-pressed="false">EN</button><button id="lang-ar" aria-pressed="true">عربي</button></div>
     </div>
@@ -113,9 +132,14 @@ tr.det td{background:var(--card-2);white-space:normal;padding:12px 14px}
 <script>
 (() => {
 "use strict";
+/* Same Google Apps Script web app as in index.html (apps_script/Code.gs). */
+const SUBMIT_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
 const T={
  ar:{dir:"rtl",brand:"لوحة إجابات الضباط",sub:"استبيان AHP · مشروع ME6097 · خاصة بالباحث",
-  h1:"إجابات ضباط الصيانة",lead:"الصق هنا رسائل الواتساب التي تصلك من الضباط، ويُستخرج رمز كل إجابة تلقائياً ويُحفظ. كل ضابط يظهر في صف مستقل.",
+  h1:"إجابات ضباط الصيانة",lead:"إجابات الاستبيان تصل تلقائياً إلى جدول Google. إذا أرسل لك ضابط إجابته عبر واتساب، الصق الرسالة هنا فيُستخرج الرمز ويُضاف إلى الجدول نفسه.",
+  keyH:"دخول الباحث",keyLead:"أدخل مفتاح الإدارة (ADMIN_KEY) من خصائص السكربت في Google Apps Script. يُحفظ في هذا المتصفح فقط.",keyPh:"مفتاح الإدارة",open:"دخول",
+  signOut:"خروج",refresh:"تحديث",loading:"جارٍ التحميل…",wrongKey:"المفتاح غير صحيح.",loadFail:"تعذّر الاتصال بخادم Google. تحقق من الاتصال ثم اضغط تحديث.",
+  notSet:"لم يُضبط رابط Apps Script في الصفحة (SUBMIT_URL).",deleted:"تم الحذف",delFail:"تعذّر الحذف",
   k:["عدد الإجابات","متسقة (CR < 0.10)","تحتاج مراجعة","آخر إجابة"],
   addH:"إضافة إجابات",paste:"الصق رسالة أو أكثر هنا",add:"أضف الإجابات",
   added:(a,d,b)=>[a?`إجابات جديدة: ${a}`:"",d?`مكررة سبق حفظها: ${d}`:"",b?`رموز غير صالحة: ${b}`:""].filter(Boolean).join(" · ")||"لم يُعثر على أي رمز في النص.",
@@ -128,7 +152,10 @@ const T={
   opts:["أ أهم بشكل مطلق (9)","أ أهم بقوة كبيرة (7)","أ أهم بوضوح (5)","أ أهم قليلاً (3)","متساويان في الأهمية (1)","ب أهم قليلاً (3)","ب أهم بوضوح (5)","ب أهم بقوة كبيرة (7)","ب أهم بشكل مطلق (9)"],
   crit:["التكلفة الإجمالية على عمر المشروع","التكلفة الرأسمالية الأولية","الاعتماد على الديزل","استمرارية الخدمات غير الحرجة","عبء صيانة المولدات","مخاطر تقلب سعر الوقود"],theme:"تبديل الوضع"},
  en:{dir:"ltr",brand:"Officer Responses",sub:"AHP survey · ME6097 · researcher only",
-  h1:"Maintenance officer responses",lead:"Paste the WhatsApp messages the officers send you. Every answer code in the text is decoded and stored, one row per officer.",
+  h1:"Maintenance officer responses",lead:"Survey answers reach the Google Sheet automatically. If an officer sends an answer by WhatsApp, paste the message here: the code is decoded and added to the same sheet.",
+  keyH:"Researcher sign-in",keyLead:"Enter the admin key (ADMIN_KEY) from the Script Properties in Google Apps Script. It is kept in this browser only.",keyPh:"Admin key",open:"Open",
+  signOut:"Sign out",refresh:"Refresh",loading:"Loading…",wrongKey:"The key is not correct.",loadFail:"Could not reach the Google server. Check the connection and press Refresh.",
+  notSet:"The Apps Script URL (SUBMIT_URL) is not set in this page.",deleted:"Deleted",delFail:"Delete failed",
   k:["Responses","Consistent (CR < 0.10)","Need review","Latest"],
   addH:"Add responses",paste:"Paste one or more messages here",add:"Add responses",
   added:(a,d,b)=>[a?`New responses: ${a}`:"",d?`Already saved: ${d}`:"",b?`Invalid codes: ${b}`:""].filter(Boolean).join(" · ")||"No answer code found in the text.",
@@ -163,10 +190,12 @@ const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");clearT
 const store={get(k){try{return JSON.parse(localStorage.getItem(k)||"null");}catch{return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
 const ICON={sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
   moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>',
-  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>'};
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  refresh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>',
+  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></svg>'};
 
-const S={lang:store.get("ahp6-owner-lang")||"ar",open:new Set(),armed:null,msg:"",msgCls:"ok",mode:"init"};
-let DB=null, DL=null, rows=[];
+const S={lang:store.get("ahp6-owner-lang")||"ar",open:new Set(),armed:null,msg:"",msgCls:"ok",mode:"init",key:store.get("ahp6-admin-key")||"",busy:false,keyMsg:""};
+let rows=[];
 const L=()=>T[S.lang];
 function isDark(){const a=document.documentElement.getAttribute("data-theme");return a?a==="dark":matchMedia("(prefers-color-scheme: dark)").matches;}
 {const th=store.get("ahp6-theme");if(th==="dark"||th==="light")document.documentElement.setAttribute("data-theme",th);}
@@ -177,12 +206,23 @@ function render(){
   $("#t-brand").textContent=t.brand; $("#t-sub").textContent=t.sub;
   $("#lang-en").setAttribute("aria-pressed",S.lang==="en"); $("#lang-ar").setAttribute("aria-pressed",S.lang==="ar");
   const tb=$("#themeBtn"); tb.innerHTML=isDark()?ICON.sun:ICON.moon; tb.title=t.theme; tb.setAttribute("aria-label",t.theme);
+  const rb=$("#refreshBtn"), ob=$("#outBtn"), inside=!!S.key&&S.mode!=="denied";
+  rb.hidden=ob.hidden=!inside;
+  rb.replaceChildren(S.busy?el("span",{class:"spin"}):el("span",{html:ICON.refresh,style:"display:contents"}),el("span",{class:"lbl",text:t.refresh})); rb.title=t.refresh; rb.disabled=S.busy;
+  ob.replaceChildren(el("span",{html:ICON.out,style:"display:contents"}),el("span",{class:"lbl",text:t.signOut})); ob.title=t.signOut;
+  if(!inside){
+    const inp=el("input",{class:"key",id:"keyIn",type:"password",autocomplete:"current-password",placeholder:t.keyPh,"aria-label":t.keyPh,onkeydown:e=>{if(e.key==="Enter")signIn(inp.value);}});
+    $("#main").replaceChildren(el("div",{class:"card gate"},el("h2",{text:t.keyH}),el("p",{class:"muted",text:t.keyLead}),inp,
+      el("div",{class:"row end"},el("button",{class:"cta",id:"keyBtn",onclick:()=>signIn(inp.value)},t.open),
+        S.keyMsg?el("span",{class:"msg bad",text:S.keyMsg}):null)));
+    return;
+  }
   const ok=rows.filter(r=>r.cr<0.1), g=geoGroup(ok), last=rows.length?rows[rows.length-1]:null;
   const kpis=el("div",{class:"kpis"},[rows.length,ok.length,rows.length-ok.length,last?fmtDate(last.t):"–"].map((v,n)=>el("div",{class:"kpi"},el("div",{class:"l",text:t.k[n]}),el("div",{class:"v",style:n===3?"font-size:17px;padding-top:8px":n===1?"color:var(--ok)":n===2&&v?"color:var(--warn)":"",text:String(v)}))));
   const ta=el("textarea",{id:"paste",placeholder:t.paste,"aria-label":t.paste});
   const add=el("div",{class:"card"},el("h2",{text:t.addH}),el("p",{class:"muted",text:t.lead}),ta,
-    el("div",{class:"row end"},el("button",{class:"cta",id:"addBtn",onclick:()=>importText(ta.value).then(()=>{ta.value="";})},t.add),S.msg?el("span",{class:"msg "+S.msgCls,text:S.msg}):null),
-    S.mode==="local"?el("p",{class:"msg warn",text:t.local}):S.mode==="denied"?el("p",{class:"msg warn",text:t.denied}):null);
+    el("div",{class:"row end"},el("button",{class:"cta",id:"addBtn",disabled:S.busy,onclick:()=>importText(ta.value).then(()=>{ta.value="";})},t.add),S.msg?el("span",{class:"msg "+S.msgCls,text:S.msg}):null),
+    S.mode==="error"?el("p",{class:"msg bad",text:t.loadFail}):S.mode==="unset"?el("p",{class:"msg bad",text:t.notSet}):S.mode==="loading"?el("p",{class:"msg muted",text:t.loading}):null);
   const grp=el("div",{class:"card"},el("h2",{text:t.groupH}),
     g?[el("p",{class:"muted",text:t.groupNote(g.n)}),bars(g.w),el("div",{class:"row"},el("span",{class:"pill "+(g.CR<0.1?"ok":"warn"),text:`CR ${g.CR.toFixed(3)}`}))]:el("p",{class:"empty",text:t.groupNone}));
   const head=el("tr",{},t.cols.map((c,n)=>el("th",{class:n===2||n===3?"":"n",text:c})),[0,1,2,3,4,5].map(c=>el("th",{class:"n c",style:`--cc:${ccol(c)}`,text:`C${c+1}`,title:t.crit[c]})),el("th",{text:""}));
@@ -195,7 +235,7 @@ function render(){
       r.w.map((x,c)=>el("td",{class:"w",style:`--cc:${ccol(c)};--a:${(.08+.42*x/mx).toFixed(2)}`},el("span",{text:(x*100).toFixed(1)}))),
       el("td",{},el("div",{class:"row",style:"flex-wrap:nowrap;gap:6px"},
         el("button",{class:"mini",onclick:()=>{isOpen?S.open.delete(r.id):S.open.add(r.id);render();}},isOpen?t.hide:t.show),
-        el("button",{class:"mini danger"+(S.armed===r.id?" armed":""),onclick:()=>{if(S.armed===r.id){S.armed=null;remove(r.id);}else{S.armed=r.id;render();setTimeout(()=>{if(S.armed===r.id){S.armed=null;render();}},4000);}}},S.armed===r.id?t.sure:t.del)))));
+        el("button",{class:"mini danger"+(S.armed===r.id?" armed":""),onclick:()=>{if(S.armed===r.id){S.armed=null;remove(r.code);}else{S.armed=r.id;render();setTimeout(()=>{if(S.armed===r.id){S.armed=null;render();}},4000);}}},S.armed===r.id?t.sure:t.del)))));
     if(isOpen) body.push(el("tr",{class:"det"},el("td",{colspan:"12"},
       el("div",{class:"ans"},PAIRS.map(([i,j],q)=>el("div",{},el("b",{text:String(q+1)}),el("span",{},
         el("i",{style:`--cc:${ccol(i)}`,text:`C${i+1}`})," ",t.crit[i]," ⟷ ",el("i",{style:`--cc:${ccol(j)}`,text:`C${j+1}`})," ",t.crit[j],
@@ -214,54 +254,66 @@ function bars(w){
     el("span",{class:"tr"},el("span",{style:`width:${(w[c]/mx*100).toFixed(1)}%`})),el("span",{class:"v",text:(w[c]*100).toFixed(1)+"%"}))));
 }
 
-/* storage: the artifact database when available, otherwise this browser */
+/* storage: the Google Sheet behind the Apps Script web app (apps_script/Code.gs); the key goes in the POST body, never in a URL */
 function setRows(list){rows=list.filter(r=>r&&Array.isArray(r.a)).map(r=>{const x=ahp(r.a);return {...r,cr:x.CR,w:x.w};}).sort((a,b)=>String(a.t).localeCompare(String(b.t)));render();}
+async function api(body){
+  if(!/^https:\/\//.test(SUBMIT_URL)&&!/^http:\/\/(localhost|127\.0\.0\.1)[:/]/.test(SUBMIT_URL)) throw Object.assign(new Error("unset"),{unset:true});
+  const ac=new AbortController(), timer=setTimeout(()=>ac.abort(),30000);
+  try{const res=await fetch(SUBMIT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body),signal:ac.signal,redirect:"follow"});
+    const js=await res.json(); return js;}
+  finally{clearTimeout(timer);}
+}
+async function load(){
+  S.busy=true; if(S.mode!=="ok")S.mode="loading"; render();
+  try{
+    const js=await api({action:"list",key:S.key});
+    if(!js||!js.ok){S.busy=false;S.mode="denied";S.keyMsg=L().wrongKey;S.key="";store.set("ahp6-admin-key",null);render();return;}
+    S.mode="ok"; S.busy=false;
+    setRows((js.rows||[]).map(r=>{const code=String(r.Code||""), o=decode(code);return o?{id:idOf(code),l:o.l,j:o.j,s:o.s,e:o.e,a:o.a,t:o.t,code,received:r.Received}:null;}).filter(Boolean));
+  }catch(e){S.busy=false;S.mode=e&&e.unset?"unset":"error";render();}
+}
+function signIn(v){v=String(v||"").trim();if(!v)return;S.key=v;S.keyMsg="";store.set("ahp6-admin-key",v);S.mode="init";load();}
 async function importText(text){
   const t=L(), codes=[...new Set((text.match(/AHP6-[A-Za-z0-9_-]+-[0-9a-f]{4}/g)||[]))];
   const bad0=(text.match(/AHP6-\S*/g)||[]).length-(text.match(/AHP6-[A-Za-z0-9_-]+-[0-9a-f]{4}/g)||[]).length;
-  let a=0,d=0,b=Math.max(0,bad0);
-  const have=new Set(rows.map(r=>r.id)), local=S.mode!=="db"?(store.get("ahp6-owner-rows")||[]):null;
+  let a=0,d=0,b=Math.max(0,bad0),fail=0;
+  const have=new Set(rows.map(r=>r.id));
+  S.busy=true; render();
   for(const code of codes){
     const o=decode(code); if(!o){b++;continue;}
-    const id=idOf(code); if(have.has(id)){d++;continue;}
-    const x=ahp(o.a), doc={id,l:o.l,j:o.j,s:o.s,e:o.e,a:o.a,t:o.t,cr:+x.CR.toFixed(4),w:x.w.map(v=>+v.toFixed(5)),code,src:"code",added:new Date().toISOString()};
-    if(S.mode==="db"){try{await DB.doc(`responses/${id}`).set(doc);a++;have.add(id);}catch{b++;}}
-    else{local.push(doc);a++;have.add(id);}
+    if(have.has(idOf(code))){d++;continue;}
+    try{const js=await api({code});if(js&&js.ok){js.duplicate?d++:a++;have.add(idOf(code));}else if(js&&js.error==="invalid code")b++;else fail++;}
+    catch{fail++;}
   }
-  if(local){store.set("ahp6-owner-rows",local);setRows(local);}
-  S.msg=t.added(a,d,b); S.msgCls=a?"ok":"warn"; render();
+  S.busy=false;
+  S.msg=t.added(a,d,b)+(fail?` · ${t.loadFail}`:""); S.msgCls=a&&!fail?"ok":"warn";
+  if(a) await load(); else render();
 }
-async function remove(id){
-  if(S.mode==="db"){try{await DB.doc(`responses/${id}`).delete();}catch{}}
-  else{const local=(store.get("ahp6-owner-rows")||[]).filter(r=>r.id!==id);store.set("ahp6-owner-rows",local);setRows(local);}
+async function remove(code){
+  const t=L();
+  try{const js=await api({action:"delete",code,key:S.key});toast(js&&js.ok?t.deleted:t.delFail);}catch{toast(t.delFail);}
+  await load();
 }
 function csvText(){
   const en=T.en, q=s=>`"${String(s).replace(/"/g,'""')}"`;
   const head=["No","Submitted (UTC)","Language","Job","Specialisation","Years of experience","CR",...[1,2,3,4,5,6].map(c=>`w_C${c}`),...PAIRS.map((_,n)=>`Q${n+1} answer`),...PAIRS.map((_,n)=>`Q${n+1} a(A,B)`),"Code"];
   const lines=rows.map((r,n)=>[n+1,r.t,r.l,"Maintenance officer","Maintenance",en.exps[r.e],r.cr.toFixed(4),...r.w.map(x=>x.toFixed(5)),...r.a.map(k=>en.opts[STEPS.indexOf(k)]),...r.a.map(k=>{const v=valueOf(k);return v>=1?String(v):`1/${intensity(k)}`;}),r.code].map(q).join(","));
-  return "﻿"+[head.map(q).join(","),...lines].join("\r\n");
+  return "\ufeff"+[head.map(q).join(","),...lines].join("\r\n");
 }
-async function saveCsv(){
-  const t=L(), name=`ME6097_AHP_responses_${new Date().toISOString().slice(0,10)}.csv`;
-  if(DL){try{const r=await DL.save({filename:name,data:new Blob([csvText()],{type:"text/csv"})});if(r&&r.status==="saved")toast(t.saved);return;}catch(e){if(e&&e.code==="unavailable")DL=null;else return;}}
-  try{const a=el("a",{href:URL.createObjectURL(new Blob([csvText()],{type:"text/csv"})),download:name});document.body.append(a);a.click();a.remove();}catch{copyCsv();}
+function saveCsv(){
+  const name=`ME6097_AHP_responses_${new Date().toISOString().slice(0,10)}.csv`;
+  try{const u=URL.createObjectURL(new Blob([csvText()],{type:"text/csv"})),a=el("a",{href:u,download:name});document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast(L().saved);}catch{copyCsv();}
 }
 async function copyCsv(){try{await navigator.clipboard.writeText(csvText().slice(1));toast(L().copied);}catch{}}
 
-async function connect(){
-  const local=()=>{S.mode="local";setRows(store.get("ahp6-owner-rows")||[]);};
-  if(!window.claude||!window.claude.use){local();return;}
-  try{
-    const [db,dl]=await Promise.all([window.claude.use("db"),window.claude.use("downloads").catch(()=>null)]);
-    DL=dl; if(!db){local();return;}
-    DB=db; S.mode="db";
-    db.collection("responses").onSnapshot(snap=>setRows(snap.docs.map(d=>({...d.data(),id:d.id}))),()=>{S.mode="denied";render();});
-  }catch{local();}
-}
 $("#lang-en").addEventListener("click",()=>{S.lang="en";store.set("ahp6-owner-lang","en");render();});
 $("#lang-ar").addEventListener("click",()=>{S.lang="ar";store.set("ahp6-owner-lang","ar");render();});
 $("#themeBtn").addEventListener("click",()=>{const nx=isDark()?"light":"dark";document.documentElement.setAttribute("data-theme",nx);store.set("ahp6-theme",nx);render();});
+$("#refreshBtn").addEventListener("click",()=>{if(!S.busy)load();});
+$("#outBtn").addEventListener("click",()=>{S.key="";S.keyMsg="";S.mode="init";rows=[];S.msg="";store.set("ahp6-admin-key",null);render();});
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",render);
-render(); connect();
+render(); if(S.key) load();
 })();
 </script>
+</body>
+</html>
