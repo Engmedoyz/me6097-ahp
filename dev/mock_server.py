@@ -87,6 +87,10 @@ def handle(body):
 class H(SimpleHTTPRequestHandler):
     def __init__(self, *a, **k): super().__init__(*a, directory=str(ROOT), **k)
     def log_message(self, fmt, *args): sys.stderr.write("[mock] " + fmt % args + "\n")
+    def end_headers(self):
+        if not any(b"Access-Control-Allow-Origin" in h for h in getattr(self, "_headers_buffer", [])):
+            self.send_header("Access-Control-Allow-Origin", "*")
+        super().end_headers()
     def _json(self, obj, status=200):
         b = json.dumps(obj).encode()
         self.send_response(status); self.send_header("Content-Type","application/json"); self.send_header("Access-Control-Allow-Origin","*")
